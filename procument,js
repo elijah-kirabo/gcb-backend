@@ -1,0 +1,57 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+
+const Procurement = sequelize.define('Procurement', {
+  procurement_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  produce_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  dealer_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  branch_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  recorded_by: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  tonnage: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  cost_per_ton: {
+    type: DataTypes.DECIMAL(12, 2),
+    allowNull: false
+  },
+  total_cost: {
+    type: DataTypes.DECIMAL(15, 2),
+    allowNull: false
+  },
+  selling_price: {
+    type: DataTypes.DECIMAL(12, 2),
+    allowNull: false
+  },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false
+  },
+  time: {
+    type: DataTypes.TIME,
+    allowNull: false
+  }
+}, {
+  tableName: 'procurement',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
+});
+
+module.exports = Procurement;
