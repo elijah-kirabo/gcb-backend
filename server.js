@@ -1,14 +1,13 @@
 const app = require('./app');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+require('dotenv').config();
+const sequelize = require('./database');
 const PORT = process.env.PORT || 5000;
 
-// Test database connection
+// Test database connection (Sequelize)
 async function testDatabaseConnection() {
   try {
-    await prisma.$connect();
-    console.log('✅ Database connected successfully');
+    await sequelize.authenticate();
+    console.log('✅ Database connected successfully (Sequelize)');
   } catch (error) {
     console.error('❌ Database connection failed:', error);
     process.exit(1);
@@ -19,12 +18,14 @@ async function testDatabaseConnection() {
 app.listen(PORT, async () => {
   await testDatabaseConnection();
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  await prisma.$disconnect();
+  try {
+    await sequelize.close();
+  } catch (err) {}
   console.log('🛑 Server shut down gracefully');
   process.exit(0);
 });
